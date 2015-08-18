@@ -40,7 +40,7 @@ static CGFloat const kMainPageControlHeight = 35;
 
 - (instancetype)initWithTitle:(NSString *)title body:(NSString *)body image:(UIImage *)image buttonText:(NSString *)buttonText action:(dispatch_block_t)action {
     self = [super init];
-
+    
     // hold onto the passed in parameters, and set the action block to an empty block
     // in case we were passed nil, so we don't have to nil-check the block later before
     // calling
@@ -48,7 +48,7 @@ static CGFloat const kMainPageControlHeight = 35;
     _body = body;
     _image = image;
     _buttonText = buttonText;
-
+    
     self.buttonActionHandler = action;
     
     // default auto-navigation
@@ -56,14 +56,14 @@ static CGFloat const kMainPageControlHeight = 35;
     
     // default icon properties
     if(_image) {
-		self.iconHeight = _image.size.height;
-		self.iconWidth = _image.size.width;
-	}
+        self.iconHeight = _image.size.height;
+        self.iconWidth = _image.size.width;
+    }
     
     else {
-		self.iconHeight = kDefaultImageViewSize;
-		self.iconWidth = kDefaultImageViewSize;
-	}
+        self.iconHeight = kDefaultImageViewSize;
+        self.iconWidth = kDefaultImageViewSize;
+    }
     
     // default title properties
     self.titleFontName = kDefaultOnboardingFont;
@@ -100,7 +100,7 @@ static CGFloat const kMainPageControlHeight = 35;
     self.viewDidAppearBlock = ^{};
     self.viewWillDisappearBlock = ^{};
     self.viewDidDisappearBlock = ^{};
-
+    
     return self;
 }
 
@@ -151,7 +151,7 @@ static CGFloat const kMainPageControlHeight = 35;
 
 - (void)viewWillDisappear:(BOOL)animated {
     [super viewWillDisappear:animated];
-
+    
     // call our view will disappear block
     if (self.viewWillDisappearBlock) {
         dispatch_async(dispatch_get_main_queue(), ^{
@@ -162,7 +162,7 @@ static CGFloat const kMainPageControlHeight = 35;
 
 - (void)viewDidDisappear:(BOOL)animated {
     [super viewDidDisappear:animated];
-
+    
     // call our view did disappear block
     if (self.viewDidDisappearBlock) {
         dispatch_async(dispatch_get_main_queue(), ^{
@@ -198,6 +198,13 @@ static CGFloat const kMainPageControlHeight = 35;
     _mainTextLabel.numberOfLines = 0;
     _mainTextLabel.textAlignment = self.titleTextAlignment;
     [_mainTextLabel sizeToFit];
+    if (_mainTextLabel.frame.size.width < self.contentWidth) {
+        CGRect newRect = CGRectMake(_mainTextLabel.frame.origin.x,
+                                    _mainTextLabel.frame.origin.y,
+                                    self.contentWidth,
+                                    _mainTextLabel.frame.size.height);
+        [_mainTextLabel setFrame:newRect];
+    }
     _mainTextLabel.center = CGPointMake(horizontalCenter, _mainTextLabel.center.y);
     [self.view addSubview:_mainTextLabel];
     
@@ -226,6 +233,9 @@ static CGFloat const kMainPageControlHeight = 35;
         [_actionButton setTitle:_buttonText forState:UIControlStateNormal];
         [_actionButton setTitleColor:self.buttonTextColor forState:UIControlStateNormal];
         [_actionButton addTarget:self action:@selector(handleButtonPressed) forControlEvents:UIControlEventTouchUpInside];
+        
+        _actionButton.layer.cornerRadius = 5.0;
+        _actionButton.backgroundColor = [UIColor colorWithRed: 231.0 / 255. green: 91.0 / 255. blue: 0.0 / 255. alpha : 1];
         [self.view addSubview:_actionButton];
     }
 }
