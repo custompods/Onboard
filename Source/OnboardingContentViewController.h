@@ -19,7 +19,6 @@
     UIImageView *_imageView;
     UILabel *_mainTextLabel;
     UILabel *_subTextLabel;
-    UIButton *_actionButton;
 }
 
 @property (nonatomic) OnboardingViewController *delegate;
@@ -28,6 +27,8 @@
 
 @property (nonatomic) CGFloat iconHeight;
 @property (nonatomic) CGFloat iconWidth;
+
+@property (nonatomic) CGFloat contentWidth;
 
 @property (nonatomic, strong) UIColor *titleTextColor;
 @property (nonatomic, strong) UIColor *bodyTextColor;
@@ -41,6 +42,8 @@
 
 @property (nonatomic, strong) NSString *buttonFontName;
 @property (nonatomic) CGFloat buttonFontSize;
+
+@property (nonatomic, strong) UIButton *actionButton;
 
 @property (nonatomic) CGFloat topPadding;
 @property (nonatomic) CGFloat underIconPadding;

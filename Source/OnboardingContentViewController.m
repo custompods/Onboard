@@ -89,6 +89,8 @@ static CGFloat const kMainPageControlHeight = 35;
     self.bodyTextColor = DEFAULT_TEXT_COLOR;
     self.buttonTextColor = DEFAULT_TEXT_COLOR;
     
+    self.contentWidth = 0;
+    
     // default blocks
     self.viewWillAppearBlock = ^{};
     self.viewDidAppearBlock = ^{};
@@ -101,6 +103,10 @@ static CGFloat const kMainPageControlHeight = 35;
 - (void)viewDidLoad {
     [super viewDidLoad];
     
+    if (self.contentWidth == 0) {
+        CGFloat viewWidth = CGRectGetWidth(self.view.frame);
+        self.contentWidth = viewWidth * kContentWidthMultiplier;
+    }
     // now that the view has loaded we can generate the content
     [self generateView];
 }
@@ -172,9 +178,8 @@ static CGFloat const kMainPageControlHeight = 35;
     // do some calculation for some common values we'll need, namely the width of the view,
     // the center of the width, and the content width we want to fill up, which is some
     // fraction of the view width we set in the multipler constant
-    CGFloat viewWidth = CGRectGetWidth(self.view.frame);
-    CGFloat horizontalCenter = viewWidth / 2;
-    CGFloat contentWidth = viewWidth * kContentWidthMultiplier;
+    CGFloat horizontalCenter = self.contentWidth / 2;
+    
     
     // create the image view with the appropriate image, size, and center in on screen
     _imageView = [[UIImageView alloc] initWithImage:_image];
@@ -182,7 +187,7 @@ static CGFloat const kMainPageControlHeight = 35;
     [self.view addSubview:_imageView];
     
     // create and configure the main text label sitting underneath the icon with the provided padding
-    _mainTextLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, CGRectGetMaxY(_imageView.frame) + self.underIconPadding, contentWidth, 0)];
+    _mainTextLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, CGRectGetMaxY(_imageView.frame) + self.underIconPadding, self.contentWidth , 0)];
     _mainTextLabel.text = _titleText;
     _mainTextLabel.textColor = self.titleTextColor;
     _mainTextLabel.font = [UIFont fontWithName:self.titleFontName size:self.titleFontSize];
@@ -193,7 +198,7 @@ static CGFloat const kMainPageControlHeight = 35;
     [self.view addSubview:_mainTextLabel];
     
     // create and configure the sub text label
-    _subTextLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, CGRectGetMaxY(_mainTextLabel.frame) + self.underTitlePadding, contentWidth, 0)];
+    _subTextLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, CGRectGetMaxY(_mainTextLabel.frame) + self.underTitlePadding, self.contentWidth, 0)];
     _subTextLabel.text = _body;
     _subTextLabel.textColor = self.bodyTextColor;
     _subTextLabel.font = [UIFont fontWithName:self.bodyFontName size:self.bodyFontSize];
@@ -205,7 +210,7 @@ static CGFloat const kMainPageControlHeight = 35;
     
     // create the action button if we were given button text
     if (_buttonText) {
-        _actionButton = [[UIButton alloc] initWithFrame:CGRectMake((CGRectGetMaxX(self.view.frame) / 2) - (contentWidth / 2), CGRectGetMaxY(self.view.frame) - self.underPageControlPadding - kMainPageControlHeight - kActionButtonHeight - self.bottomPadding, contentWidth, kActionButtonHeight)];
+        _actionButton = [[UIButton alloc] initWithFrame:CGRectMake((CGRectGetMaxX(self.view.frame) / 2) - (self.contentWidth / 2), CGRectGetMaxY(self.view.frame) - self.underPageControlPadding - kMainPageControlHeight - kActionButtonHeight - self.bottomPadding, self.contentWidth, kActionButtonHeight)];
         _actionButton.titleLabel.font = [UIFont fontWithName:self.buttonFontName size:self.buttonFontSize];
         [_actionButton setTitle:_buttonText forState:UIControlStateNormal];
         [_actionButton setTitleColor:self.buttonTextColor forState:UIControlStateNormal];
