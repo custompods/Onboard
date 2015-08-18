@@ -209,6 +209,13 @@ static CGFloat const kMainPageControlHeight = 35;
     _subTextLabel.numberOfLines = 0;
     _subTextLabel.textAlignment = self.bodyTextAlignment;
     [_subTextLabel sizeToFit];
+    if (_subTextLabel.frame.size.width < self.contentWidth) {
+        CGRect newRect = CGRectMake(_subTextLabel.frame.origin.x,
+                                    _subTextLabel.frame.origin.y,
+                                    self.contentWidth,
+                                    _subTextLabel.frame.size.height);
+        [_subTextLabel setFrame:newRect];
+    }
     _subTextLabel.center = CGPointMake(horizontalCenter, _subTextLabel.center.y);
     [self.view addSubview:_subTextLabel];
     
