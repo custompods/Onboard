@@ -90,6 +90,10 @@ static CGFloat const kMainPageControlHeight = 35;
     self.buttonTextColor = DEFAULT_TEXT_COLOR;
     
     self.contentWidth = 0;
+    self.leftPadding = 0;
+    
+    self.titleTextAlignment = NSTextAlignmentCenter;
+    self.bodyTextAlignment = NSTextAlignmentCenter;
     
     // default blocks
     self.viewWillAppearBlock = ^{};
@@ -178,7 +182,7 @@ static CGFloat const kMainPageControlHeight = 35;
     // do some calculation for some common values we'll need, namely the width of the view,
     // the center of the width, and the content width we want to fill up, which is some
     // fraction of the view width we set in the multipler constant
-    CGFloat horizontalCenter = self.contentWidth / 2;
+    CGFloat horizontalCenter = self.leftPadding + self.contentWidth / 2;
     
     
     // create the image view with the appropriate image, size, and center in on screen
@@ -192,7 +196,7 @@ static CGFloat const kMainPageControlHeight = 35;
     _mainTextLabel.textColor = self.titleTextColor;
     _mainTextLabel.font = [UIFont fontWithName:self.titleFontName size:self.titleFontSize];
     _mainTextLabel.numberOfLines = 0;
-    _mainTextLabel.textAlignment = NSTextAlignmentCenter;
+    _mainTextLabel.textAlignment = self.titleTextAlignment;
     [_mainTextLabel sizeToFit];
     _mainTextLabel.center = CGPointMake(horizontalCenter, _mainTextLabel.center.y);
     [self.view addSubview:_mainTextLabel];
@@ -203,7 +207,7 @@ static CGFloat const kMainPageControlHeight = 35;
     _subTextLabel.textColor = self.bodyTextColor;
     _subTextLabel.font = [UIFont fontWithName:self.bodyFontName size:self.bodyFontSize];
     _subTextLabel.numberOfLines = 0;
-    _subTextLabel.textAlignment = NSTextAlignmentCenter;
+    _subTextLabel.textAlignment = self.bodyTextAlignment;
     [_subTextLabel sizeToFit];
     _subTextLabel.center = CGPointMake(horizontalCenter, _subTextLabel.center.y);
     [self.view addSubview:_subTextLabel];

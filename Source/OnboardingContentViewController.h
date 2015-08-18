@@ -28,24 +28,27 @@
 @property (nonatomic) CGFloat iconHeight;
 @property (nonatomic) CGFloat iconWidth;
 
-@property (nonatomic) CGFloat contentWidth;
-
 @property (nonatomic, strong) UIColor *titleTextColor;
 @property (nonatomic, strong) UIColor *bodyTextColor;
 @property (nonatomic, strong) UIColor *buttonTextColor;
 
 @property (nonatomic, strong) NSString *titleFontName;
 @property (nonatomic) CGFloat titleFontSize;
+@property (nonatomic) NSTextAlignment titleTextAlignment;
 
 @property (nonatomic, strong) NSString *bodyFontName;
 @property (nonatomic) CGFloat bodyFontSize;
+@property (nonatomic) NSTextAlignment bodyTextAlignment;
 
 @property (nonatomic, strong) NSString *buttonFontName;
 @property (nonatomic) CGFloat buttonFontSize;
 
 @property (nonatomic, strong) UIButton *actionButton;
 
+@property (nonatomic) CGFloat contentWidth;
+
 @property (nonatomic) CGFloat topPadding;
+@property (nonatomic) CGFloat leftPadding;
 @property (nonatomic) CGFloat underIconPadding;
 @property (nonatomic) CGFloat underTitlePadding;
 @property (nonatomic) CGFloat bottomPadding;
