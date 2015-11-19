@@ -40,6 +40,9 @@
 @property (nonatomic) BOOL stopMoviePlayerWhenDisappear;
 @property (nonatomic) MPMoviePlayerController *moviePlayerController;
 
+@property (nonatomic) UIImageView *currentBackgroundImageView;
+@property (nonatomic) UIImageView *nextBackgroundImageView;
+
 // Initializers
 + (instancetype)onboardWithBackgroundImage:(UIImage *)backgroundImage contents:(NSArray *)contents;
 - (instancetype)initWithBackgroundImage:(UIImage *)backgroundImage contents:(NSArray *)contents;

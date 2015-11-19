@@ -22,6 +22,7 @@
 }
 
 @property (nonatomic) OnboardingViewController *delegate;
+@property (nonatomic) UIImage *backgroundImage;
 
 @property (nonatomic) BOOL movesToNextViewController;
 

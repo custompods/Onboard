@@ -130,7 +130,7 @@ static NSString * const kSkipButtonText = @"Skip";
     // create our page view controller
     _pageVC = [[UIPageViewController alloc] initWithTransitionStyle:UIPageViewControllerTransitionStyleScroll navigationOrientation:UIPageViewControllerNavigationOrientationHorizontal options:nil];
     _pageVC.view.frame = self.view.frame;
-    _pageVC.view.backgroundColor = [UIColor whiteColor];
+    _pageVC.view.backgroundColor = [UIColor blackColor];
     _pageVC.delegate = self;
     _pageVC.dataSource = self.swipingEnabled ? self : nil;
     
@@ -138,15 +138,16 @@ static NSString * const kSkipButtonText = @"Skip";
         [self blurBackground];
     }
     
-    UIImageView *backgroundImageView;
-    
+   
     // create the background image view and set it to aspect fill so it isn't skewed
-    if (self.backgroundImage) {
-        backgroundImageView = [[UIImageView alloc] initWithFrame:self.view.bounds];
-        backgroundImageView.contentMode = UIViewContentModeScaleAspectFill;
-        [backgroundImageView setImage:self.backgroundImage];
-        [self.view addSubview:backgroundImageView];
-    }
+//    if (self.backgroundImage) {
+//        self.currentBackgroundImageView = [[UIImageView alloc] initWithFrame:self.view.bounds];
+//        self.currentBackgroundImageView.contentMode = UIViewContentModeScaleAspectFill;
+//        [self.currentBackgroundImageView setImage:self.backgroundImage];
+//        [self.view addSubview:self.currentBackgroundImageView];
+//    }
+    
+    
     
     // as long as the shouldMaskBackground setting hasn't been set to NO, we want to
     // create a partially opaque view and add it on top of the image view, so that it
@@ -176,8 +177,9 @@ static NSString * const kSkipButtonText = @"Skip";
     [_pageVC.view sendSubviewToBack:backgroundMaskView];
     
     // send the background image view to the back if we have one
-    if (backgroundImageView) {
-        [_pageVC.view sendSubviewToBack:backgroundImageView];
+    if (self.currentBackgroundImageView) {
+        [_pageVC.view sendSubviewToBack:self.currentBackgroundImageView];
+        [_pageVC.view sendSubviewToBack:self.nextBackgroundImageView];
     }
     
     // otherwise send the video view to the back if we have one
@@ -402,10 +404,45 @@ static NSString * const kSkipButtonText = @"Skip";
 
 - (void)setCurrentPage:(OnboardingContentViewController *)currentPage {
     _currentPage = currentPage;
+   
+    if (_currentPage.backgroundImage) {
+        [self.currentBackgroundImageView setAlpha:1.0];
+        [self.currentBackgroundImageView setImage:currentPage.backgroundImage];
+    }
 }
 
 - (void)setNextPage:(OnboardingContentViewController *)nextPage {
     _upcomingPage = nextPage;
+    
+    if (_upcomingPage.backgroundImage) {
+        [self.nextBackgroundImageView setImage:_upcomingPage.backgroundImage];
+        [self.nextBackgroundImageView setAlpha:0.5];
+    }
+}
+
+- (UIImageView *)currentBackgroundImageView {
+    if (!_currentBackgroundImageView) {
+        _currentBackgroundImageView = [[UIImageView alloc] initWithFrame:self.view.bounds];
+        _currentBackgroundImageView.contentMode = UIViewContentModeScaleAspectFill;
+        
+        [self.view addSubview:_currentBackgroundImageView];
+        [_pageControl sendSubviewToBack:_currentBackgroundImageView];
+    }
+    
+    return _currentBackgroundImageView;
+}
+
+- (UIImageView *)nextBackgroundImageView {
+    if (!_nextBackgroundImageView) {
+        _nextBackgroundImageView = [[UIImageView alloc] initWithFrame:self.view.bounds];
+        _nextBackgroundImageView.contentMode = UIViewContentModeScaleAspectFill;
+        _nextBackgroundImageView.alpha = 0.0;
+        [self.view addSubview:_nextBackgroundImageView];
+        [_pageControl sendSubviewToBack:_nextBackgroundImageView];
+//        _nextBackgroundImageView.alpha = 1.0;
+    }
+    
+    return _nextBackgroundImageView;
 }
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView {
@@ -422,10 +459,12 @@ static NSString * const kSkipButtonText = @"Skip";
     // set the next page's alpha to be the percent complete, so if we're 90% of the way
     // scrolling towards the next page, its content's alpha should be 90%
     [_upcomingPage updateAlphas:percentComplete];
+    [_nextBackgroundImageView setAlpha:percentComplete + 0.5];
     
     // set the current page's alpha to the difference between 100% and this percent value,
     // so we're 90% scrolling towards the next page, the current content's alpha sshould be 10%
     [_currentPage updateAlphas:1.0 - percentComplete];
+    [_currentBackgroundImageView setAlpha:1.0 - percentComplete];
     
     // If we want to fade the page control on the last page...
     if (self.fadePageControlOnLastPage) {
