@@ -8,7 +8,11 @@
 
 #import <UIKit/UIKit.h>
 #import "OnboardingContentViewController.h"
+#if __has_feature(modules)
 @import MediaPlayer;
+#else
+#import <MediaPlayer/MediaPlayer.h>
+#endif
 
 @interface OnboardingViewController : UIViewController <UIPageViewControllerDataSource, UIPageViewControllerDelegate, UIScrollViewDelegate>
 

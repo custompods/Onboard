@@ -8,7 +8,12 @@
 
 #import "OnboardingViewController.h"
 #import "OnboardingContentViewController.h"
+
+#if __has_feature(modules)
 @import Accelerate;
+#else
+#import <Accelerate/Accelerate.h>
+#endif
 
 static CGFloat const kPageControlHeight = 35;
 static CGFloat const kSkipButtonWidth = 100;
