@@ -11,6 +11,7 @@
 @class OnboardingViewController;
 
 @interface OnboardingContentViewController : UIViewController {
+    @public
     NSString *_titleText;
     NSString *_body;
     UIImage *_image;
